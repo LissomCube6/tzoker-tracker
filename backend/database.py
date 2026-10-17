@@ -9,8 +9,14 @@ TURSO_TOKEN = os.getenv("TURSO_AUTH_TOKEN")
 
 # 2. Construct database URL dynamically
 if TURSO_DB_URL and TURSO_TOKEN:
-    # Production / Cloud setup using Turso
-    db_url = TURSO_DB_URL.replace("libsql://", "sqlite+libsql://")
+    # 1. Strip trailing slashes to prevent HTTP 308 redirect loops
+    db_url = TURSO_DB_URL.rstrip("/")
+
+    # 2. Ensure scheme uses sqlite+libsql://
+    if db_url.startswith("libsql://"):
+        db_url = db_url.replace("libsql://", "sqlite+libsql://", 1)
+    elif not db_url.startswith("sqlite+libsql://"):
+        db_url = f"sqlite+libsql://{db_url}"
     SQLALCHEMY_DATABASE_URL = f"{db_url}"
     engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={
         "auth_token": TURSO_TOKEN,
