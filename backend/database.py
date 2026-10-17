@@ -13,7 +13,7 @@ if TURSO_DB_URL and TURSO_TOKEN:
     db_url = TURSO_DB_URL.replace("libsql://", "sqlite+libsql://")
     SQLALCHEMY_DATABASE_URL = f"{db_url}"
     engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={
-        "authToken": TURSO_TOKEN,
+        "auth_token": TURSO_TOKEN,
         "check_same_thread": False})
 else:
     # Fallback for local testing (runs locally if env vars are missing)
