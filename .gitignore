@@ -1,0 +1,21 @@
+# Environment variables and secrets (DO NOT COMMIT)
+.env
+
+# Local SQLite databases
+*.db
+*.sqlite
+*.sqlite3
+
+# Python virtual environments & cache
+venv/
+.venv/
+__pycache__/
+*.pyc
+
+# Testing files
+startup.py
+tzoker_app.bat
+
+# IDE configuration folders
+.vscode/
+.idea/
