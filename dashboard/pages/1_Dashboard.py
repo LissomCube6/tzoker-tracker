@@ -1,8 +1,7 @@
 import streamlit as st
 import pandas as pd
 import requests
-
-API_URL = "http://localhost:8000"
+from api_config import API_URL
 
 st.title("Dashboard")
 
@@ -25,8 +24,8 @@ if df.empty:
     st.stop()
 
 # Summary
-spent = df[df["type"]=="spent"]["amount"].sum()
-won = df[df["type"]=="won"]["amount"].sum()
+spent = df[df["type"] == "spent"]["amount"].sum()
+won = df[df["type"] == "won"]["amount"].sum()
 net = won - spent
 
 c1, c2, c3 = st.columns(3)
@@ -36,7 +35,7 @@ c3.metric("Net", f"€{net:.2f}")
 
 # Charts
 st.subheader("Spend vs Win")
-df_chart = df.groupby(["date","type"])["amount"].sum().unstack(fill_value=0)
+df_chart = df.groupby(["date", "type"])["amount"].sum().unstack(fill_value=0)
 st.bar_chart(df_chart)
 
 st.subheader("Net Over Time")

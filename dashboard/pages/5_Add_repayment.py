@@ -1,8 +1,7 @@
 import streamlit as st
 import pandas as pd
 import requests
-
-API_URL = "http://localhost:8000"
+from api_config import API_URL
 
 st.title("Amount Owed and Repayments")
 

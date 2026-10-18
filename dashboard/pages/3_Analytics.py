@@ -1,8 +1,7 @@
 import streamlit as st
 import pandas as pd
 import requests
-
-API_URL = "http://localhost:8000"
+from api_config import API_URL
 
 st.title("Analytics")
 
@@ -14,36 +13,36 @@ if df.empty:
     st.stop()
 
 # Key stats
-avg_spent = df[df["type"]=="spent"]["amount"].mean()
-avg_won = df[df["type"]=="won"]["amount"].mean()
-ratio = (df[df["type"]=="won"]["amount"].sum() /
-         df[df["type"]=="spent"]["amount"].sum()) * 100
+avg_spent = df[df["type"] == "spent"]["amount"].mean()
+avg_won = df[df["type"] == "won"]["amount"].mean()
+ratio = (df[df["type"] == "won"]["amount"].sum() /
+         df[df["type"] == "spent"]["amount"].sum()) * 100
 
 best_day = df.groupby("date").apply(
-    lambda x: x[x["type"]=="won"]["amount"].sum() -
-              x[x["type"]=="spent"]["amount"].sum()
+    lambda x: x[x["type"] == "won"]["amount"].sum() -
+    x[x["type"] == "spent"]["amount"].sum()
 ).idxmax()
 
 best_value = df.groupby("date").apply(
-    lambda x: x[x["type"]=="won"]["amount"].sum() -
-              x[x["type"]=="spent"]["amount"].sum()
+    lambda x: x[x["type"] == "won"]["amount"].sum() -
+    x[x["type"] == "spent"]["amount"].sum()
 ).max()
 
 c1, c2, c3, c4 = st.columns(4)
 c1.metric("Avg Spend", f"€{avg_spent:.2f}")
 c2.metric("Avg Win", f"€{avg_won:.2f}")
 c3.metric("Win/Spend Ratio", f"{ratio:.2f}%")
-c4.metric("Best Day", f"{best_value:.2f}€", best_day)
+c4.metric("Best Day", f"{best_value:.2f}€", f"{best_day}")
 
 # Charts
 st.subheader("Cumulative Net")
-df_chart = df.groupby(["date","type"])["amount"].sum().unstack(fill_value=0)
+df_chart = df.groupby(["date", "type"])["amount"].sum().unstack(fill_value=0)
 df_chart["net"] = df_chart.get("won", 0) - df_chart.get("spent", 0)
 df_chart["cumulative"] = df_chart["net"].cumsum()
 st.line_chart(df_chart["cumulative"])
 
 st.subheader("Spend Distribution")
-st.bar_chart(df[df["type"]=="spent"]["amount"])
+st.bar_chart(df[df["type"] == "spent"]["amount"])
 
 st.subheader("Win Distribution")
-st.bar_chart(df[df["type"]=="won"]["amount"])
+st.bar_chart(df[df["type"] == "won"]["amount"])

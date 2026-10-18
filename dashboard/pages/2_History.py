@@ -1,8 +1,7 @@
 import streamlit as st
 import pandas as pd
 import requests
-
-API_URL = "http://localhost:8000"
+from api_config import API_URL
 
 st.title("History")
 
@@ -28,8 +27,8 @@ if df.empty:
     st.stop()
 
 # Summary
-spent = df[df["type"]=="spent"]["amount"].sum()
-won = df[df["type"]=="won"]["amount"].sum()
+spent = df[df["type"] == "spent"]["amount"].sum()
+won = df[df["type"] == "won"]["amount"].sum()
 net = won - spent
 
 c1, c2, c3 = st.columns(3)

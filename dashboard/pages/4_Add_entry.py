@@ -1,7 +1,6 @@
 import streamlit as st
 import requests
-
-API_URL = "http://localhost:8000"
+from api_config import API_URL
 
 st.title("Add Entry")
 
