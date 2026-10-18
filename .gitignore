@@ -9,12 +9,17 @@
 # Python virtual environments & cache
 venv/
 .venv/
+.venv311/
+.venv312/
 __pycache__/
 *.pyc
 
 # Testing files
 startup.py
 tzoker_app.bat
+
+# Develelopment and build artifacts
+turso-api-token.txt
 
 # IDE configuration folders
 .vscode/
