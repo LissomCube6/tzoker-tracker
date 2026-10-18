@@ -9,8 +9,8 @@ pages = [
     st.Page(str(project_root / "pages" / "1_Dashboard.py"), title="Dashboard"),
     st.Page(str(project_root / "pages" / "2_History.py"), title="History"),
     st.Page(str(project_root / "pages" / "3_Analytics.py"), title="Analytics"),
-    st.Page(str(project_root / "pages" / "4_Add_Entry.py"), title="Add Entries"),
-    st.Page(str(project_root / "pages" / "5_Add_Repayment.py"),
+    st.Page(str(project_root / "pages" / "4_Add_entry.py"), title="Add Entries"),
+    st.Page(str(project_root / "pages" / "5_Add_repayment.py"),
             title="Repayments"),
 ]
 
