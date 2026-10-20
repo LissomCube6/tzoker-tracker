@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
 class EntryBase(BaseModel):
-    date: str  # DD-MM-YYYY
+    date: str  # ISO 8601 date (YYYY-MM-DD)
     type: str  # "spent" or "won"
     amount: float
 
@@ -17,7 +17,7 @@ class EntryRead(EntryBase):
 
 # Repayment schemas
 class RepaymentBase(BaseModel):
-    date: str  # DD-MM-YYYY
+    date: str  # ISO 8601 date (YYYY-MM-DD)
     amount: float
 
 class RepaymentCreate(RepaymentBase):
@@ -28,4 +28,3 @@ class RepaymentRead(RepaymentBase):
 
     class Config:
         from_attributes = True
-

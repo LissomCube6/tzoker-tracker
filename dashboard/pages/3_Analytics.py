@@ -12,6 +12,8 @@ if df.empty:
     st.info("No data available.")
     st.stop()
 
+df["date"] = pd.to_datetime(df["date"])
+
 # Key stats
 avg_spent = df[df["type"] == "spent"]["amount"].mean()
 avg_won = df[df["type"] == "won"]["amount"].mean()
@@ -32,7 +34,7 @@ c1, c2, c3, c4 = st.columns(4)
 c1.metric("Avg Spend", f"€{avg_spent:.2f}")
 c2.metric("Avg Win", f"€{avg_won:.2f}")
 c3.metric("Win/Spend Ratio", f"{ratio:.2f}%")
-c4.metric("Best Day", f"{best_value:.2f}€", f"{best_day}")
+c4.metric("Best Day", f"{best_value:.2f}€", f"{best_day:%d/%m/%Y}")
 
 # Charts
 st.subheader("Cumulative Net")

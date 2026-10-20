@@ -26,9 +26,15 @@ r_repayments = requests.get(f"{API_URL}/repayments/", params=params)
 # Convert responses to DataFrames
 df_entries = pd.DataFrame(r_entries.json())
 df_repayments = pd.DataFrame(r_repayments.json())
+if not df_repayments.empty:
+    df_repayments["date"] = pd.to_datetime(df_repayments["date"])
 
 # Calculate total spent and total repayments
-total_spent = df_entries[df_entries["type"] == "spent"]["amount"].sum()
+total_spent = (
+    df_entries.loc[df_entries["type"] == "spent", "amount"].sum()
+    if not df_entries.empty
+    else 0
+)
 total_repaid = df_repayments["amount"].sum() if not df_repayments.empty else 0
 
 # Calculate amount owed
@@ -49,7 +55,7 @@ st.subheader("Add Repayment")
 with st.form(key="repayment_form", clear_on_submit=True):
 
     col1, col2 = st.columns(2)
-    repayment_date = col1.date_input("Repayment Date")
+    repayment_date = col1.date_input("Repayment Date", format="DD/MM/YYYY")
     repayment_amount = col2.number_input(
         "Repayment Amount (€)", min_value=0.0, step=0.5)
 
@@ -131,7 +137,11 @@ else:
     # Determine which table to show
     if st.session_state.show_all_repayments:
         st.write("Showing all repayments:")
-        st.dataframe(df_repayments)
+        st.dataframe(
+            df_repayments,
+            column_config={"date": st.column_config.DateColumn(
+                format="DD/MM/YYYY")},
+        )
 
         # Collapse button
         if st.button("Show last 10 repayments"):
@@ -139,7 +149,11 @@ else:
 
     else:
         st.write("Showing last 10 repayments:")
-        st.dataframe(df_repayments.tail(10))
+        st.dataframe(
+            df_repayments.tail(10),
+            column_config={"date": st.column_config.DateColumn(
+                format="DD/MM/YYYY")},
+        )
 
         # Expand button
         if st.button("Show all repayments"):

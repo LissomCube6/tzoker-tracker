@@ -5,7 +5,7 @@ from api_config import API_URL
 st.title("Add Entry")
 
 entry_type = st.selectbox("Type", ["spent", "won"])
-entry_date = st.date_input("Date")
+entry_date = st.date_input("Date", format="DD/MM/YYYY")
 entry_amount = st.number_input("Amount (€)", min_value=0.0, step=0.5)
 
 if st.button("Add Entry"):

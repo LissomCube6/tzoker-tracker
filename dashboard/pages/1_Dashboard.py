@@ -7,8 +7,8 @@ st.title("Dashboard")
 
 # Filters
 col1, col2 = st.columns(2)
-start = col1.date_input("Start date", value=None)
-end = col2.date_input("End date", value=None)
+start = col1.date_input("Start date", value=None, format="DD/MM/YYYY")
+end = col2.date_input("End date", value=None, format="DD/MM/YYYY")
 
 params = {}
 if start:
@@ -22,6 +22,8 @@ df = pd.DataFrame(r.json())
 if df.empty:
     st.info("No entries found for selected period.")
     st.stop()
+
+df["date"] = pd.to_datetime(df["date"])
 
 # Summary
 spent = df[df["type"] == "spent"]["amount"].sum()
@@ -45,4 +47,7 @@ st.line_chart(df_net["net"])
 
 # Recent entries
 st.subheader("Recent Entries")
-st.dataframe(df[["date", "type", "amount"]].sort_values("date").tail(10))
+st.dataframe(
+    df[["date", "type", "amount"]].sort_values("date").tail(10),
+    column_config={"date": st.column_config.DateColumn(format="DD/MM/YYYY")},
+)
